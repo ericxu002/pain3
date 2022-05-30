@@ -1,0 +1,93 @@
+#include <iostream>
+#include <vector>
+#include <string>
+#include <unordered_map>
+#include <algorithm>
+using namespace std;
+
+void solve(unsigned long &num_of_test_cases, unsigned long &num_of_friendships, unordered_map<string, vector<string> > &container)
+{
+    cin >> num_of_test_cases;
+    cin >> num_of_friendships;
+    string person1, person2;
+    for (unsigned long z = 0; z < num_of_test_cases; z++)
+    {
+        for (unsigned long i = 0; i < num_of_friendships; i++)
+        {
+            cin >> person1 >> person2;
+            container[person1].push_back(person2);
+            container[person1].push_back(person1);
+            container[person2].push_back(person1);
+            container[person2].push_back(person2);
+            cout << container[person1].size() << endl;
+
+            if (container[person1].size() <= container[person2].size())
+            {
+                // cout << container[person1].size() << endl;
+                // std::vector<string> temp;
+                // temp = container[person1];
+                // container[person1] = container[person2];
+                // container[person2] = container[person1];
+
+                cout<< "contents of container1: ";
+                for(unsigned long r = 0; r < container[person2].size(); r++){
+                    cout<< container[person1][r] << " ";
+                }
+
+                cout<< "\ncontents of container2: ";
+                for(unsigned long o = 0; o < container[person2].size(); o++){
+                    cout<< container[person2][o] << " ";
+                }
+                cout<<"\n\nSEGFAULT HERE?";
+                swap(container[person1], container[person2]); //I hope that is supported lmao
+
+                cout<<"\n\nSEGFAULT HERE?";
+                cout<< "contents of container1: ";
+                for(unsigned long r = 0; r < container[person2].size(); r++){
+                    cout<< container[person1][r] << " ";
+                }
+                cout<< "contents of container2: ";
+                for(unsigned long o = 0; o < container[person2].size(); o++){
+                    cout<< container[person2][o] << " ";
+                }
+            }
+
+            for (unsigned long p = 0; p < container[person1].size(); p++)
+            {
+                // the if is for the case that there are duplicates
+                for (unsigned long l = 0; l < container[person2].size(); l++)
+                {
+                    if (container[person1][p] == container[person2][l])
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        container[person1].push_back(container[person2][p]);
+                        // cout << "THIS IS WHAT IS BEING PUSHED INTO PERSON 1 CONTAINER: " << container[person2][p] << endl;
+                        container[person2].erase(container[person2].begin() + p);
+                        p--;
+                    }
+                }
+            }
+
+            cout << container[person1].size() << endl;
+            
+            
+        }
+        //now clear the union sets
+        container.clear();
+    }
+}
+
+int main(){
+    ios_base::sync_with_stdio(false); 
+    unsigned long num_of_test_cases, num_of_friendships;
+    unordered_map<string,vector<string> > container;
+    //unordered_map<string, string> a;
+    //unordered_map<string, string> b;
+    //vector<string> set1, set2;
+
+    solve(num_of_test_cases, num_of_friendships, container);
+    return 0;
+}
